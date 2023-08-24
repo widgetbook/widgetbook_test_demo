@@ -1,16 +1,29 @@
-# widgetbook_test_demo
+# Golden Testing with Widgetbook
 
-A new Flutter project.
+This repo provides a very initial design of how should Golden Testing be supported in Widgetbook.
+We currently discussing creating a new package called `widgetbook_test` that will provide the necessary
+utilities and code generation to support Golden Testing.
 
-## Getting Started
+> [!WARNING]
+> The code in this repository is highly hypothetical, and **DOES NOT WORK**.  
+> It is only meant to show the syntax and the outcome of code generation.
 
-This project is a starting point for a Flutter application.
+## Files
 
-A few resources to get you started if this is your first Flutter project:
+| File                                                                   | Description                                          |
+| ---------------------------------------------------------------------- | ---------------------------------------------------- |
+| [`foo_widget.dart`](./lib/foo_widget.dart)                             | The widget file                                      |
+| [`foo_widget.usecase.dart`](./lib/foo_widget.usecase.dart)             | Contains functions annotated with `@UseCase(...)`    |
+| [`widgetbook.scenarios.g.dart`](./test/widgetbook.scenarios.g.dart)    | `WidgetbookTestScenario` For each `@UseCase` element |
+| [`golden_test.dart`](./test/golden_test.dart)                          | A normal golden test file using alchemist            |
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Flow
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```mermaid
+stateDiagram-v2
+    Widget --> @UseCase
+    @UseCase --> widgetbook.directories.g.dart: WidgetbookUseCase
+    widgetbook.directories.g.dart --> widgetbook.dart: Used in
+    @UseCase --> widgetbook.scenarios.g.dart: WidgetbookTestScenario
+    widgetbook.scenarios.g.dart --> golden_test.dart: Used in
+```
